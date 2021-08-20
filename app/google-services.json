@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "58223168851",
+    "project_id": "swami-samarth-pet-industries",
+    "storage_bucket": "swami-samarth-pet-industries.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58223168851:android:87247bc34bb10b9e2ee5a6",
+        "android_client_info": {
+          "package_name": "com.petblowmachine.sspi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58223168851-98jqo74d9se8oajjcsdm427jcnlhajp8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_q8Msvti8O-NV_IRAbUcn8WV838XpMeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58223168851-98jqo74d9se8oajjcsdm427jcnlhajp8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58223168851:android:bbc5856a46fd3d4e2ee5a6",
+        "android_client_info": {
+          "package_name": "com.petblowmachine.sspi_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58223168851-98jqo74d9se8oajjcsdm427jcnlhajp8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_q8Msvti8O-NV_IRAbUcn8WV838XpMeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58223168851-98jqo74d9se8oajjcsdm427jcnlhajp8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

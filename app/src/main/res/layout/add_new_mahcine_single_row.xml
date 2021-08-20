@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    android:layout_margin="10dp"
+    app:strokeColor="@color/primary_color"
+    app:strokeWidth="0.2dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtSingleRowMachineName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="Add New Machine"
+            android:textAlignment="center"
+            android:textColor="@color/primary_color"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtSingleRowMachineName"
+            android:layout_centerHorizontal="true">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/singleRowMachineImageCardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="12dp"
+                app:cardCornerRadius="16dp"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:id="@+id/imgSingleRowMachineImage"
+                    android:layout_width="160dp"
+                    android:layout_height="128dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/add_img" />
+
+            </androidx.cardview.widget.CardView>
+
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

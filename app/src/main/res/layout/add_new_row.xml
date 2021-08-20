@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    android:layout_margin="10dp"
+    app:strokeColor="@color/primary_color"
+    app:strokeWidth="0.2dp"
+    android:layout_centerInParent="true">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtCategoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="Add New Category"
+            android:textAlignment="center"
+            android:textColor="@color/primary_color"
+            android:textSize="14sp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imgCategoryCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_below="@+id/txtCategoryName"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:id="@+id/imgCategory"
+                android:layout_width="160dp"
+                android:layout_height="128dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/add_img"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/btnViewAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgCategoryCardView"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/btn_blank_blue"/>
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
