@@ -42,7 +42,6 @@ class MachineAdapter(private val context: Context, private val itemList: ArrayLi
         else{
             val currentHolder= holder as ViewHolder2
             val currentMachine = itemList[position]
-
             Glide.with(context).load(currentMachine.machineImg).centerCrop().into(holder.machineImg)
             currentHolder.machineName.text = currentMachine.machineName
             currentHolder.detailOne.text = currentMachine.detail1
