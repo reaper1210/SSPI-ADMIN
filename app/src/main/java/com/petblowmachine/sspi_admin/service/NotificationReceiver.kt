@@ -19,7 +19,7 @@ class NotificationReceiver: FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        getSharedPreferences(Applic.sharedPreferecenceName, MODE_PRIVATE).edit().putString("admin_token", token).apply()
+        getSharedPreferences(Applic.sharedPreferenceName, MODE_PRIVATE).edit().putString("admin_token", token).apply()
     }
 
     private var mNotificationManager: NotificationManager? = null

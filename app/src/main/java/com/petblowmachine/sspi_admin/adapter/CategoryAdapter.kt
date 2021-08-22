@@ -10,7 +10,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.petblowmachine.sspi_admin.R
+import com.petblowmachine.sspi_admin.activity.AddNewCategory
 import com.petblowmachine.sspi_admin.activity.MachinesActivity
 import com.petblowmachine.sspi_admin.modal.Applic
 import com.petblowmachine.sspi_admin.modal.Category
@@ -37,6 +39,7 @@ class CategoryAdapter(private val arrayList:ArrayList<Category>, private val con
         if(holder.itemViewType == 2){
             val currentHolder = holder as ViewHolder2
             currentHolder.categoryName.text = category.categoryName
+            Glide.with(context).load(category.categoryImg).centerCrop().into(holder.categoryImg)
             currentHolder.itemView.setOnClickListener {
                 val intent = Intent(context, MachinesActivity::class.java)
                 Applic.categoryName = category.categoryName
@@ -46,7 +49,9 @@ class CategoryAdapter(private val arrayList:ArrayList<Category>, private val con
         else{
             val currentHolder = holder as ViewHolder1
             currentHolder.itemView.setOnClickListener {
-                Toast.makeText(context,"Add a new Category",Toast.LENGTH_SHORT).show()
+                println("KeyList: ${Applic.detailsArrayKey}")
+                val intent = Intent(context, AddNewCategory::class.java)
+                ContextCompat.startActivity(context,intent,null)
             }
         }
     }

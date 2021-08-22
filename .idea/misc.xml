@@ -4,21 +4,29 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/bottom_nav.xml" value="0.2060546875" />
+        <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/btn_add_anything.xml" value="0.21296296296296297" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/circle.xml" value="0.1925925925925926" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/cursor_edt_text.xml" value="0.19537037037037036" />
+        <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/edit_txt_bg.xml" value="0.21296296296296297" />
+        <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/edt_txt_default.xml" value="0.21296296296296297" />
+        <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/edt_txt_selected.xml" value="0.21296296296296297" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/search_edt_bg.xml" value="0.19537037037037036" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/tab_default.xml" value="0.19537037037037036" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/tab_indicator.xml" value="0.19537037037037036" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/tab_selected.xml" value="0.19537037037037036" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/drawable/top_rect.xml" value="0.19537037037037036" />
+        <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/activity_add_new_category.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/activity_add_new_machine.xml" value="0.22" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/activity_machines.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/activity_main.xml" value="0.16" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/add_new_mahcine_single_row.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/add_new_row.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/category_single_row.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/details_single_row.xml" value="0.22" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/fragment_categories.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/fragment_requests.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/machine_single_row.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/soham/AndroidStudioProjects/SSPI_ADMIN/app/src/main/res/layout/machines_single_row.xml" value="0.22447916666666667" />
       </map>
     </option>
   </component>

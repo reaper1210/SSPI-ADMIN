@@ -4,8 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
 import com.petblowmachine.sspi_admin.R
+import com.petblowmachine.sspi_admin.adapter.MachineAdapter
 import com.petblowmachine.sspi_admin.modal.Applic
 import com.petblowmachine.sspi_admin.modal.MachineInfo
 
@@ -14,6 +15,7 @@ class MachinesActivity : AppCompatActivity() {
     private lateinit var linearLayout: LinearLayoutManager
     private lateinit var machinesAdapter: MachineAdapter
     private lateinit var db: FirebaseFirestore
+    private lateinit var arrList:ArrayList<MachineInfo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,9 +25,19 @@ class MachinesActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.machinesRecyclerView)
         linearLayout = LinearLayoutManager(this)
+        arrList = ArrayList()
 
-        val arrList = ArrayList<MachineInfo>()
+        fetchData()
 
+        machinesAdapter = MachineAdapter(this, arrList)
+
+        db.collection("categories").document(Applic.categoryName).collection("machines").document()
+            .addSnapshotListener { value, error ->
+                machinesAdapter.notifyDataSetChanged()
+            }
+    }
+
+    private fun fetchData(){
         db.collection("categories").document(Applic.categoryName).collection("Machines")
             .get()
             .addOnSuccessListener {
@@ -34,7 +46,6 @@ class MachinesActivity : AppCompatActivity() {
                         document["detail1"].toString(),document["detail2"].toString(),
                         document["detail3"].toString()))
                 }
-                machinesAdapter = MachineAdapter(this, arrList)
                 recyclerView.layoutManager = linearLayout
                 recyclerView.adapter = machinesAdapter
             }

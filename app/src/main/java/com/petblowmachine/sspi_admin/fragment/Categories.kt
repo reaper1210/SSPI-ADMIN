@@ -27,8 +27,17 @@ class Categories : Fragment() {
         val view = inflater.inflate(R.layout.fragment_categories, container, false)
         recyclerView = view.findViewById(R.id.categoryRecyclerView)
         db = FirebaseFirestore.getInstance()
+        arrayList = ArrayList()
+
+        fetchData()
+
+        adapter = CategoryAdapter(arrayList,activity as Context)
+
+        return view
+    }
+
+    private fun fetchData(){
         if(activity!=null){
-            arrayList = ArrayList()
             db.collection("categories")
                 .get()
                 .addOnSuccessListener {
@@ -37,15 +46,14 @@ class Categories : Fragment() {
                     }
                     gridLayoutManager = GridLayoutManager(activity as Context,2)
                     recyclerView.layoutManager = gridLayoutManager
-                    adapter = CategoryAdapter(arrayList,activity as Context)
                     recyclerView.adapter = adapter
                 }
                 .addOnFailureListener {
                 }
         }
+
         else{
             println("null")
         }
-        return view
     }
 }

@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         db = FirebaseFirestore.getInstance()
-        val adminToken = getSharedPreferences(Applic.sharedPreferecenceName, MODE_PRIVATE).getString("admin_token","").toString()
+        val adminToken = getSharedPreferences(Applic.sharedPreferenceName, MODE_PRIVATE).getString("admin_token","").toString()
         val docData = hashMapOf(
             "token" to adminToken
         )

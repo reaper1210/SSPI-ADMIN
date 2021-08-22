@@ -1,4 +1,4 @@
-package com.petblowmachine.sspi_admin.activity
+package com.petblowmachine.sspi_admin.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.petblowmachine.sspi_admin.R
+import com.petblowmachine.sspi_admin.activity.AddNewMachine
 import com.petblowmachine.sspi_admin.adapter.CategoryAdapter
 import com.petblowmachine.sspi_admin.modal.Applic
 import com.petblowmachine.sspi_admin.modal.MachineInfo
@@ -36,7 +38,8 @@ class MachineAdapter(private val context: Context, private val itemList: ArrayLi
         if(holder.itemViewType == 1){
             val currentHolder = holder as ViewHolder1
             currentHolder.itemView.setOnClickListener {
-                Toast.makeText(context,"Add a new Machine",Toast.LENGTH_SHORT).show()
+                val intent = Intent(context,AddNewMachine::class.java)
+                ContextCompat.startActivity(context,intent,null)
             }
         }
         else{

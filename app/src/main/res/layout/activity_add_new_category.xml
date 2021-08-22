@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddNewCategory">
+
+     <RelativeLayout
+         android:id="@+id/headAddCatAct"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:background="@drawable/top_rect">
+
+          <RelativeLayout
+              android:id="@+id/headerLayoutMachinesAct"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerHorizontal="true">
+
+               <ImageView
+                   android:id="@+id/logoMachinesAct"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="8dp"
+                   android:layout_marginTop="8dp"
+                   android:layout_marginBottom="8dp"
+                   android:src="@drawable/sspi_logo" />
+
+               <ImageView
+                   android:id="@+id/headerTextMachinesAct"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerVertical="true"
+                   android:layout_margin="8dp"
+                   android:layout_toEndOf="@id/logoMachinesAct"
+                   android:src="@drawable/header_text" />
+
+          </RelativeLayout>
+
+     </RelativeLayout>
+
+     <TextView
+         android:id="@+id/txtAddCatHeader"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:text="Add Category"
+         android:layout_below="@+id/headAddCatAct"
+         android:textSize="28sp"
+         android:textColor="@color/primary_color"
+         android:layout_margin="10dp"/>
+
+     <RelativeLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerInParent="true"
+         android:layout_marginStart="20dp"
+         android:layout_marginEnd="20dp">
+
+          <com.google.android.material.card.MaterialCardView
+              android:id="@+id/machineDetailsImageCardView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerHorizontal="true"
+              android:layout_margin="20dp"
+              android:layout_marginHorizontal="16dp"
+              android:layout_marginVertical="8dp"
+              app:cardCornerRadius="16dp"
+              app:cardElevation="10dp"
+              app:strokeColor="@color/primary_dark"
+              app:strokeWidth="1dp">
+
+               <ImageView
+                   android:id="@+id/addCatImg"
+                   android:layout_width="170dp"
+                   android:layout_height="128dp"
+                   android:scaleType="centerCrop"
+                   android:src="@drawable/add_img" />
+
+          </com.google.android.material.card.MaterialCardView>
+
+          <EditText
+              android:id="@+id/edtTxtCategoryName"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/machineDetailsImageCardView"
+              android:layout_centerHorizontal="true"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="20dp"
+              android:layout_marginEnd="20dp"
+              android:layout_marginBottom="20dp"
+              android:background="@drawable/edit_txt_bg"
+              android:hint="Enter Category Name"
+              android:padding="10dp"
+              android:textColorHint="@color/primary_color"
+              android:textCursorDrawable="@drawable/cursor_edt_txt" />
+
+
+          <Button
+              android:id="@+id/btnAddCategory"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/edtTxtCategoryName"
+              android:layout_centerInParent="true"
+              android:layout_marginTop="20dp"
+              android:background="@drawable/btn_add_anything"
+              android:text="Add Category"
+              android:textStyle="italic" />
+
+
+     </RelativeLayout>
+
+
+</RelativeLayout>
