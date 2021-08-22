@@ -1,7 +1,10 @@
 package com.petblowmachine.sspi_admin.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.media.Image
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,9 +12,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.petblowmachine.sspi_admin.R
 import com.petblowmachine.sspi_admin.adapter.DetailsAdapter
 import com.petblowmachine.sspi_admin.modal.Applic
@@ -28,13 +37,18 @@ class AddNewMachine : AppCompatActivity() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var btnAddMachine: Button
     private lateinit var btnRemoveEdtTxt: ImageView
+    private lateinit var addMachineImg:ImageView
+    private lateinit var imageUri: Uri
     private lateinit var db:FirebaseFirestore
+    private lateinit var storageReference: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_machine)
 
+        Applic.machineImg = ""
         db = FirebaseFirestore.getInstance()
+        storageReference = FirebaseStorage.getInstance().reference
         edtTextMachineName = findViewById(R.id.edtTextMachineName)
         edtTxtKeyDetail1 = findViewById(R.id.edtTextDetail1)
         edtTxtKeyDetail2 = findViewById(R.id.edtTextDetail2)
@@ -43,6 +57,7 @@ class AddNewMachine : AppCompatActivity() {
         recyclerView = findViewById(R.id.detailsEdtTextRecyclerView)
         btnAddMachine = findViewById(R.id.btnAddMachine)
         btnRemoveEdtTxt = findViewById(R.id.btnRemoveEdtTxt)
+        addMachineImg = findViewById(R.id.addMachineImg)
 
         arrayList = ArrayList()
         arrayList.add(0)
@@ -50,6 +65,35 @@ class AddNewMachine : AppCompatActivity() {
         recyclerView.layoutManager = linearLayoutManager
         adapter = DetailsAdapter(this, arrayList)
         recyclerView.adapter = adapter
+
+        val startForProfileImageResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                val resultCode = result.resultCode
+                val data = result.data
+
+                if (resultCode == Activity.RESULT_OK) {
+                    val fileUri = data?.data!!
+                    imageUri = fileUri
+                    uploadImage()
+                } else if (resultCode == ImagePicker.RESULT_ERROR) {
+                    Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        addMachineImg.setOnClickListener {
+            ImagePicker.with(this)
+                .compress(1024)
+                .crop(160f,128f)
+                .maxResultSize(
+                    1080,
+                    1080
+                )
+                .createIntent { intent ->
+                    startForProfileImageResult.launch(intent)
+                }
+        }
 
         btnAddEdtTxt.setOnClickListener {
             recyclerView.clearFocus()
@@ -74,38 +118,45 @@ class AddNewMachine : AppCompatActivity() {
         btnAddMachine.setOnClickListener {
             if(!TextUtils.isEmpty(edtTextMachineName.text) and !TextUtils.isEmpty(edtTxtKeyDetail1.text)
                 and !TextUtils.isEmpty(edtTxtKeyDetail2.text) and !TextUtils.isEmpty(edtTxtKeyDetail3.text)){
-                    val machineName = edtTextMachineName.text.toString()
-                    Applic.arrayPos = 1
-                    println("KeyList ${Applic.detailsArrayKey}")
-                    println("ValueList ${Applic.detailsArrayValue}")
-                val data = HashMap<String,String>()
-                data["detail1"] = edtTxtKeyDetail1.text.toString()
-                data["detail2"] = edtTxtKeyDetail2.text.toString()
-                data["detail3"] = edtTxtKeyDetail3.text.toString()
+                    if(Applic.machineImg!=""){
+                        val machineName = edtTextMachineName.text.toString()
+                        Applic.arrayPos = 1
+                        println("KeyList ${Applic.detailsArrayKey}")
+                        println("ValueList ${Applic.detailsArrayValue}")
+                        val data = HashMap<String,String>()
+                        data["detail1"] = edtTxtKeyDetail1.text.toString()
+                        data["detail2"] = edtTxtKeyDetail2.text.toString()
+                        data["detail3"] = edtTxtKeyDetail3.text.toString()
+                        data["machineImg"] = Applic.machineImg
 
-                val data2 = HashMap<String,String>()
-                for(i in 0 until Applic.detailsArrayKey.size){
-                    data2[Applic.detailsArrayKey[i]] = Applic.detailsArrayValue[i]
-                }
-                if(Applic.areAllDetailsFilled){
-                    db.collection("categories").document(Applic.categoryName).collection("Machines")
-                        .document(machineName)
-                        .set(data)
-                        .addOnSuccessListener {
+                        val data2 = HashMap<String,String>()
+                        for(i in 0 until Applic.detailsArrayKey.size){
+                            data2[Applic.detailsArrayKey[i]] = Applic.detailsArrayValue[i]
+                        }
+                        if(Applic.areAllDetailsFilled){
                             db.collection("categories").document(Applic.categoryName).collection("Machines")
-                                .document(machineName).collection("details").document("details")
-                                .set(data2)
+                                .document(machineName)
+                                .set(data)
                                 .addOnSuccessListener {
-                                    Toast.makeText(this,"Added SuccessFully",Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startActivity(intent)
+                                    db.collection("categories").document(Applic.categoryName).collection("Machines")
+                                        .document(machineName).collection("details").document("details")
+                                        .set(data2)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(this,"Added SuccessFully",Toast.LENGTH_SHORT).show()
+                                            val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            startActivity(intent)
+                                        }
                                 }
                         }
-                }
+                        else{
+                            Toast.makeText(this,"Please fill atleast one Detail",Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 else{
-                    Toast.makeText(this,"Please fill atleast one Detail",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Machine Image Required",Toast.LENGTH_SHORT).show()
                 }
+
             }
             else{
                 Toast.makeText(this,"Please fill all Required Fields",Toast.LENGTH_SHORT).show()
@@ -113,4 +164,19 @@ class AddNewMachine : AppCompatActivity() {
         }
 
     }
+
+    private fun uploadImage() {
+        val filePath = storageReference.child("machineImages").child(Applic.categoryName)
+        var categoryImage: String
+        filePath.putFile(imageUri).addOnSuccessListener {
+            filePath.downloadUrl.addOnSuccessListener {
+                Applic.machineImg = it.toString()
+                Glide.with(this)
+                    .load(imageUri)
+                    .centerCrop()
+                    .into(addMachineImg)
+            }
+        }
+    }
+
 }

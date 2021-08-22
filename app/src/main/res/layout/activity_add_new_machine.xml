@@ -251,7 +251,7 @@
                                         android:id="@+id/btnRemoveEdtTxt"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:src="@drawable/add_img" />
+                                        android:src="@drawable/remove_img" />
 
                                 </androidx.cardview.widget.CardView>
 
@@ -265,10 +265,14 @@
                         android:id="@+id/btnAddMachine"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/btn_add_anything"
                         android:layout_below="@+id/header2Cardview"
                         android:layout_centerHorizontal="true"
-                        android:layout_margin="10dp"/>
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Add Machine"
+                        android:background="@drawable/btn_add_anything" />
 
                 </RelativeLayout>
 
