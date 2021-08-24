@@ -11,6 +11,7 @@ import com.petblowmachine.sspi_admin.modal.Applic
 import com.petblowmachine.sspi_admin.modal.MachineInfo
 
 class MachinesActivity : AppCompatActivity() {
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayout: LinearLayoutManager
     private lateinit var machinesAdapter: MachineAdapter
@@ -26,6 +27,7 @@ class MachinesActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.machinesRecyclerView)
         linearLayout = LinearLayoutManager(this)
         arrList = ArrayList()
+        arrList.add(MachineInfo("Add","","","",""))
 
         fetchData()
 

@@ -28,6 +28,7 @@ class Categories : Fragment() {
         recyclerView = view.findViewById(R.id.categoryRecyclerView)
         db = FirebaseFirestore.getInstance()
         arrayList = ArrayList()
+        arrayList.add(Category("Add",""))
 
         fetchData()
 

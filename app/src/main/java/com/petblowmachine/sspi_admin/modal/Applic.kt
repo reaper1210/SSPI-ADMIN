@@ -1,5 +1,7 @@
 package com.petblowmachine.sspi_admin.modal
 
+import androidx.recyclerview.widget.RecyclerView
+
 object Applic {
     var categoryName = ""
     var machineName = ""

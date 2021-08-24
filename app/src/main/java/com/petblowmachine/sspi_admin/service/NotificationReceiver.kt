@@ -11,7 +11,6 @@ import android.os.Vibrator
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.petblowmachine.sspi_admin.R
 import com.petblowmachine.sspi_admin.activity.MainActivity
 import com.petblowmachine.sspi_admin.modal.Applic
 
@@ -52,8 +51,9 @@ class NotificationReceiver: FirebaseMessagingService() {
 
         val builder = NotificationCompat.Builder(this, "CHANNEL_ID")
         val resultIntent = Intent(this, MainActivity::class.java)
+        val resourceImage = resources.getIdentifier(remoteMessage.notification!!.icon,"drawable",packageName)
         val pendingIntent = PendingIntent.getActivity(this, 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        builder.setSmallIcon(R.drawable.sspi_logo)
+        builder.setSmallIcon(resourceImage)
         builder.setContentTitle(remoteMessage.notification!!.title)
         builder.setContentText(remoteMessage.notification!!.body)
         builder.setContentIntent(pendingIntent)
