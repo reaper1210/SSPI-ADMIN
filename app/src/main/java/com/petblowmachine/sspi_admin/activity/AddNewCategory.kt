@@ -90,10 +90,8 @@ class AddNewCategory : AppCompatActivity() {
                 db.collection("categories").document(Applic.categoryName)
                     .update("categoryImg", Applic.categoryImg)
                     .addOnSuccessListener {
-                        Toast.makeText(this, "Category Added Successfully", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(this, "Category Added Successfully", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@AddNewCategory, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                     }
             }

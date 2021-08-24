@@ -77,4 +77,9 @@ class MainActivity : AppCompatActivity() {
             tab.requestLayout()
         }
     }
+
+    override fun onBackPressed() {
+        finishAffinity()
+    }
+
 }

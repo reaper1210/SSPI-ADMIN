@@ -1,6 +1,7 @@
 package com.petblowmachine.sspi_admin.activity
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.media.Image
@@ -12,6 +13,7 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -172,11 +174,34 @@ class AddNewMachine : AppCompatActivity() {
             }
 
             btnDeleteMachine.setOnClickListener {
-                db.collection("categories").document(Applic.categoryName)
-                    .collection("Machines").document(Applic.machineName)
-                    .delete()
-                val intent = Intent(this,MachinesActivity::class.java)
-                startActivity(intent)
+
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("Do you want to delete ${Applic.machineName} Machine?")
+                    .setTitle("Delete Machine")
+                    .setPositiveButton("Yes") { _, _ ->
+                        finish()
+                        db.collection("categories").document(Applic.categoryName)
+                            .collection("Machines").document(Applic.machineName)
+                            .delete()
+                            .addOnCompleteListener {
+                                if(it.isSuccessful){
+                                    Toast.makeText(this,"${Applic.machineName} deleted successfully",Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(this,MachinesActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                else{
+                                    Toast.makeText(this,"Failed to delete ${Applic.machineName}",Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+
+                    }
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.cancel()
+                    }
+                    .create()
+                    .show()
+
             }
 
         }

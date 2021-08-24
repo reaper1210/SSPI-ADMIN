@@ -1,8 +1,12 @@
 package com.petblowmachine.sspi_admin.activity
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.*
@@ -14,6 +18,7 @@ import com.petblowmachine.sspi_admin.modal.MachineInfo
 class MachinesActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var btnDeleteCategory: CardView
     private lateinit var linearLayout: LinearLayoutManager
     private lateinit var machinesAdapter: MachineAdapter
     private lateinit var db: FirebaseFirestore
@@ -26,6 +31,8 @@ class MachinesActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         recyclerView = findViewById(R.id.machinesRecyclerView)
+        btnDeleteCategory = findViewById(R.id.deleteCategoryCardView)
+
         linearLayout = LinearLayoutManager(this)
         arrList = ArrayList()
         arrList.add(MachineInfo("Add","","","",""))
@@ -43,6 +50,34 @@ class MachinesActivity : AppCompatActivity() {
             }
 
         machinesAdapter = MachineAdapter(this, arrList)
+
+        btnDeleteCategory.setOnClickListener {
+
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Do you want to delete ${Applic.categoryName} Category?")
+                .setTitle("Delete Category")
+                .setPositiveButton("Yes") { _, _ ->
+                    finish()
+                    db.collection("categories").document(Applic.categoryName).delete()
+                        .addOnCompleteListener {
+                            if(it.isSuccessful){
+                                Toast.makeText(this,"${Applic.categoryName} deleted successfully",Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this,MainActivity::class.java)
+                                startActivity(intent)
+                            }
+                            else{
+                                Toast.makeText(this,"Failed to delete ${Applic.categoryName}",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .create()
+                .show()
+
+        }
 
     }
 

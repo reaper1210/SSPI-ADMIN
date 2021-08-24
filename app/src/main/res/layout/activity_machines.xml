@@ -64,4 +64,24 @@
         android:layout_below="@id/headMachinesAct"
         android:layout_centerHorizontal="true" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/deleteCategoryCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:cardCornerRadius="100dp"
+        android:backgroundTint="@color/primary_color">
+
+        <ImageView
+            android:id="@+id/imgDeleteCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_delete" />
+
+    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>
