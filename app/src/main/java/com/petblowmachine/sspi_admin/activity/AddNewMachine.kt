@@ -8,6 +8,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,6 +38,7 @@ class AddNewMachine : AppCompatActivity() {
     private lateinit var arrayList: ArrayList<MachineDetail>
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var btnAddMachine: Button
+    private lateinit var btnDeleteMachine: Button
     private lateinit var btnRemoveEdtTxt: ImageView
     private lateinit var addMachineImg:ImageView
     private lateinit var imageUri: Uri
@@ -57,6 +59,7 @@ class AddNewMachine : AppCompatActivity() {
         btnAddEdtTxt = findViewById(R.id.btnAddEdtTxt)
         recyclerView = findViewById(R.id.detailsEdtTextRecyclerView)
         btnAddMachine = findViewById(R.id.btnAddMachine)
+        btnDeleteMachine = findViewById(R.id.btnDeleteMachine)
         btnRemoveEdtTxt = findViewById(R.id.btnRemoveEdtTxt)
         addMachineImg = findViewById(R.id.addMachineImg)
         txtAddMachine = findViewById(R.id.headerTextAddMachAct)
@@ -143,7 +146,6 @@ class AddNewMachine : AppCompatActivity() {
                                                     .addOnSuccessListener {
                                                         Toast.makeText(this,"Updated SuccessFully",Toast.LENGTH_SHORT).show()
                                                         val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
-                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                                         startActivity(intent)
                                                     }
                                             }
@@ -169,9 +171,18 @@ class AddNewMachine : AppCompatActivity() {
                 }
             }
 
+            btnDeleteMachine.setOnClickListener {
+                db.collection("categories").document(Applic.categoryName)
+                    .collection("Machines").document(Applic.machineName)
+                    .delete()
+                val intent = Intent(this,MachinesActivity::class.java)
+                startActivity(intent)
+            }
+
         }
         else{
             Applic.machineImg = ""
+            btnDeleteMachine.visibility = View.GONE
             arrayList.add(MachineDetail("",""))
             adapter = DetailsAdapter(this, arrayList)
             recyclerView.adapter = adapter
@@ -202,7 +213,6 @@ class AddNewMachine : AppCompatActivity() {
                                         .addOnSuccessListener {
                                             Toast.makeText(this,"Added SuccessFully",Toast.LENGTH_SHORT).show()
                                             val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                             startActivity(intent)
                                         }
                                 }
@@ -275,7 +285,6 @@ class AddNewMachine : AppCompatActivity() {
 
     private fun uploadImage() {
         val filePath = storageReference.child("machineImages").child(Applic.categoryName)
-        var categoryImage: String
         filePath.putFile(imageUri).addOnSuccessListener {
             filePath.downloadUrl.addOnSuccessListener {
                 Applic.machineImg = it.toString()
@@ -285,6 +294,11 @@ class AddNewMachine : AppCompatActivity() {
                     .into(addMachineImg)
             }
         }
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this,MachinesActivity::class.java)
+        startActivity(intent)
     }
 
 }

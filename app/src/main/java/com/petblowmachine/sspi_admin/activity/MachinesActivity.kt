@@ -1,5 +1,6 @@
 package com.petblowmachine.sspi_admin.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,13 +30,6 @@ class MachinesActivity : AppCompatActivity() {
         arrList = ArrayList()
         arrList.add(MachineInfo("Add","","","",""))
 
-        fetchData()
-
-        machinesAdapter = MachineAdapter(this, arrList)
-
-    }
-
-    private fun fetchData(){
         db.collection("categories").document(Applic.categoryName).collection("Machines")
             .get()
             .addOnSuccessListener {
@@ -47,5 +41,14 @@ class MachinesActivity : AppCompatActivity() {
                 recyclerView.layoutManager = linearLayout
                 recyclerView.adapter = machinesAdapter
             }
+
+        machinesAdapter = MachineAdapter(this, arrList)
+
     }
+
+    override fun onBackPressed() {
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
+    }
+
 }

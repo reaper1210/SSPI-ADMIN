@@ -274,6 +274,19 @@
                         android:text="Add Machine"
                         android:background="@drawable/btn_add_anything" />
 
+                    <Button
+                        android:id="@+id/btnDeleteMachine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btnAddMachine"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Delete Machine"
+                        android:background="@drawable/btn_add_anything" />
+
                 </RelativeLayout>
 
             </RelativeLayout>
