@@ -33,10 +33,6 @@ class MachinesActivity : AppCompatActivity() {
 
         machinesAdapter = MachineAdapter(this, arrList)
 
-        db.collection("categories").document(Applic.categoryName).collection("machines").document()
-            .addSnapshotListener { value, error ->
-                machinesAdapter.notifyDataSetChanged()
-            }
     }
 
     private fun fetchData(){

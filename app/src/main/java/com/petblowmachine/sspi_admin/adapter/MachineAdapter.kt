@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.petblowmachine.sspi_admin.R
 import com.petblowmachine.sspi_admin.activity.AddNewMachine
-import com.petblowmachine.sspi_admin.adapter.CategoryAdapter
 import com.petblowmachine.sspi_admin.modal.Applic
 import com.petblowmachine.sspi_admin.modal.MachineInfo
 
@@ -51,10 +49,11 @@ class MachineAdapter(private val context: Context, private val itemList: ArrayLi
             currentHolder.detailTwo.text = currentMachine.detail2
             currentHolder.detailThree.text = currentMachine.detail3
             currentHolder.itemView.setOnClickListener {
-                Toast.makeText(context,"Clicked on a Machine",Toast.LENGTH_SHORT).show()
                 Applic.machineName = currentMachine.machineName
                 Applic.machineImg = currentMachine.machineImg
-//            context.startActivity(intent)
+                val intent = Intent(context,AddNewMachine::class.java)
+                intent.putExtra("edit",true)
+                context.startActivity(intent)
             }
         }
     }

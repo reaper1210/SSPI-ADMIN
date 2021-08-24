@@ -8,10 +8,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,8 +21,12 @@ import com.google.firebase.storage.StorageReference
 import com.petblowmachine.sspi_admin.R
 import com.petblowmachine.sspi_admin.adapter.DetailsAdapter
 import com.petblowmachine.sspi_admin.modal.Applic
+import com.petblowmachine.sspi_admin.modal.MachineDetail
 
 class AddNewMachine : AppCompatActivity() {
+
+    private lateinit var txtAddMachine: TextView
+    private lateinit var txtAddImage: TextView
     private lateinit var edtTextMachineName: EditText
     private lateinit var edtTxtKeyDetail1: EditText
     private lateinit var edtTxtKeyDetail2: EditText
@@ -33,7 +34,7 @@ class AddNewMachine : AppCompatActivity() {
     private lateinit var btnAddEdtTxt: ImageView
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DetailsAdapter
-    private lateinit var arrayList: ArrayList<Int>
+    private lateinit var arrayList: ArrayList<MachineDetail>
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var btnAddMachine: Button
     private lateinit var btnRemoveEdtTxt: ImageView
@@ -46,7 +47,7 @@ class AddNewMachine : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_machine)
 
-        Applic.machineImg = ""
+        arrayList = ArrayList()
         db = FirebaseFirestore.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
         edtTextMachineName = findViewById(R.id.edtTextMachineName)
@@ -58,13 +59,169 @@ class AddNewMachine : AppCompatActivity() {
         btnAddMachine = findViewById(R.id.btnAddMachine)
         btnRemoveEdtTxt = findViewById(R.id.btnRemoveEdtTxt)
         addMachineImg = findViewById(R.id.addMachineImg)
+        txtAddMachine = findViewById(R.id.headerTextAddMachAct)
+        txtAddImage = findViewById(R.id.headClkToAddImg)
 
-        arrayList = ArrayList()
-        arrayList.add(0)
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
-        adapter = DetailsAdapter(this, arrayList)
-        recyclerView.adapter = adapter
+
+        if(intent.getBooleanExtra("edit",false)){
+
+            db.collection("categories").document(Applic.categoryName).collection("Machines").document(Applic.machineName)
+                .get()
+                .addOnCompleteListener { getMachine->
+                    if(getMachine.isSuccessful){
+                        val result = getMachine.result
+                        val data = result?.data
+                        val detailOne = data?.get("detail1").toString()
+                        val detailTwo = data?.get("detail2").toString()
+                        val detailThree = data?.get("detail3").toString()
+                        edtTxtKeyDetail1.setText(detailOne)
+                        edtTxtKeyDetail2.setText(detailTwo)
+                        edtTxtKeyDetail3.setText(detailThree)
+                    }
+                    else{
+                        Toast.makeText(this,"Some Error Occurred while retrieving machine details",Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            db.collection("categories").document(Applic.categoryName)
+                .collection("Machines").document(Applic.machineName)
+                .collection("details").document("details").get()
+                .addOnCompleteListener { getDetails ->
+
+                    if(getDetails.isSuccessful){
+                        val document = getDetails.result!!
+                        for(docField in document.data!!){
+                            val key = docField.key.toString()
+                            val value = docField.value.toString()
+                            arrayList.add(MachineDetail(key,value))
+                        }
+                        adapter = DetailsAdapter(this, arrayList)
+                        recyclerView.adapter = adapter
+                    }
+                    else{
+                        Toast.makeText(this,"Some Error Occurred while retrieving machine details",Toast.LENGTH_LONG).show()
+                    }
+
+                }
+
+            edtTextMachineName.setText(Applic.machineName)
+            Glide.with(this).load(Applic.machineImg).centerCrop().error(R.drawable.add_img).into(addMachineImg)
+            txtAddMachine.text = "Edit Machine"
+            txtAddImage.text = "Click to edit Image"
+            btnAddMachine.text = "Update Details"
+
+            btnAddMachine.setOnClickListener {
+                if(!TextUtils.isEmpty(edtTextMachineName.text) and !TextUtils.isEmpty(edtTxtKeyDetail1.text)
+                    and !TextUtils.isEmpty(edtTxtKeyDetail2.text) and !TextUtils.isEmpty(edtTxtKeyDetail3.text)){
+                    if(Applic.machineImg!=""){
+                        val machineName = edtTextMachineName.text.toString()
+                        val data = HashMap<String,String>()
+                        data["detail1"] = edtTxtKeyDetail1.text.toString()
+                        data["detail2"] = edtTxtKeyDetail2.text.toString()
+                        data["detail3"] = edtTxtKeyDetail3.text.toString()
+                        data["machineImg"] = Applic.machineImg
+
+                        val data2 = HashMap<String,String>()
+                        for(i in 0 until Applic.detailsArrayKey.size){
+                            data2[Applic.detailsArrayKey[i]] = Applic.detailsArrayValue[i]
+                        }
+                        if(Applic.areAllDetailsFilled){
+
+                            db.collection("categories").document(Applic.categoryName).collection("Machines")
+                                .document(Applic.machineName).delete()
+                                .addOnCompleteListener { delete ->
+                                    if(delete.isSuccessful){
+                                        db.collection("categories").document(Applic.categoryName).collection("Machines")
+                                            .document(machineName)
+                                            .set(data)
+                                            .addOnSuccessListener {
+                                                db.collection("categories").document(Applic.categoryName).collection("Machines")
+                                                    .document(machineName).collection("details").document("details")
+                                                    .set(data2)
+                                                    .addOnSuccessListener {
+                                                        Toast.makeText(this,"Updated SuccessFully",Toast.LENGTH_SHORT).show()
+                                                        val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                        startActivity(intent)
+                                                    }
+                                            }
+                                    }
+                                    else{
+                                        Toast.makeText(this,"Error while updating machine",Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+
+
+                        }
+                        else{
+                            Toast.makeText(this,"Please fill atleast one Detail",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    else{
+                        Toast.makeText(this,"Machine Image Required",Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                else{
+                    Toast.makeText(this,"Please fill all Required Fields",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+        else{
+            Applic.machineImg = ""
+            arrayList.add(MachineDetail("",""))
+            adapter = DetailsAdapter(this, arrayList)
+            recyclerView.adapter = adapter
+
+            btnAddMachine.setOnClickListener {
+                if(!TextUtils.isEmpty(edtTextMachineName.text) and !TextUtils.isEmpty(edtTxtKeyDetail1.text)
+                    and !TextUtils.isEmpty(edtTxtKeyDetail2.text) and !TextUtils.isEmpty(edtTxtKeyDetail3.text)){
+                    if(Applic.machineImg!=""){
+                        val machineName = edtTextMachineName.text.toString()
+                        val data = HashMap<String,String>()
+                        data["detail1"] = edtTxtKeyDetail1.text.toString()
+                        data["detail2"] = edtTxtKeyDetail2.text.toString()
+                        data["detail3"] = edtTxtKeyDetail3.text.toString()
+                        data["machineImg"] = Applic.machineImg
+
+                        val data2 = HashMap<String,String>()
+                        for(i in 0 until Applic.detailsArrayKey.size){
+                            data2[Applic.detailsArrayKey[i]] = Applic.detailsArrayValue[i]
+                        }
+                        if(Applic.areAllDetailsFilled){
+                            db.collection("categories").document(Applic.categoryName).collection("Machines")
+                                .document(machineName)
+                                .set(data)
+                                .addOnSuccessListener {
+                                    db.collection("categories").document(Applic.categoryName).collection("Machines")
+                                        .document(machineName).collection("details").document("details")
+                                        .set(data2)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(this,"Added SuccessFully",Toast.LENGTH_SHORT).show()
+                                            val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            startActivity(intent)
+                                        }
+                                }
+                        }
+                        else{
+                            Toast.makeText(this,"Please fill atleast one Detail",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    else{
+                        Toast.makeText(this,"Machine Image Required",Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                else{
+                    Toast.makeText(this,"Please fill all Required Fields",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
 
         val startForProfileImageResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -97,8 +254,7 @@ class AddNewMachine : AppCompatActivity() {
 
         btnAddEdtTxt.setOnClickListener {
             recyclerView.clearFocus()
-            arrayList.add(Applic.arrayPos)
-            Applic.arrayPos++
+            arrayList.add(MachineDetail("",""))
             adapter.notifyItemInserted(arrayList.size - 1)
         }
 
@@ -111,55 +267,7 @@ class AddNewMachine : AppCompatActivity() {
                 adapter.notifyItemRemoved(arrayList.size)
             }
             else{
-                Toast.makeText(this,"Enter Atleast one Detail",Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        btnAddMachine.setOnClickListener {
-            if(!TextUtils.isEmpty(edtTextMachineName.text) and !TextUtils.isEmpty(edtTxtKeyDetail1.text)
-                and !TextUtils.isEmpty(edtTxtKeyDetail2.text) and !TextUtils.isEmpty(edtTxtKeyDetail3.text)){
-                    if(Applic.machineImg!=""){
-                        val machineName = edtTextMachineName.text.toString()
-                        Applic.arrayPos = 1
-                        println("KeyList ${Applic.detailsArrayKey}")
-                        println("ValueList ${Applic.detailsArrayValue}")
-                        val data = HashMap<String,String>()
-                        data["detail1"] = edtTxtKeyDetail1.text.toString()
-                        data["detail2"] = edtTxtKeyDetail2.text.toString()
-                        data["detail3"] = edtTxtKeyDetail3.text.toString()
-                        data["machineImg"] = Applic.machineImg
-
-                        val data2 = HashMap<String,String>()
-                        for(i in 0 until Applic.detailsArrayKey.size){
-                            data2[Applic.detailsArrayKey[i]] = Applic.detailsArrayValue[i]
-                        }
-                        if(Applic.areAllDetailsFilled){
-                            db.collection("categories").document(Applic.categoryName).collection("Machines")
-                                .document(machineName)
-                                .set(data)
-                                .addOnSuccessListener {
-                                    db.collection("categories").document(Applic.categoryName).collection("Machines")
-                                        .document(machineName).collection("details").document("details")
-                                        .set(data2)
-                                        .addOnSuccessListener {
-                                            Toast.makeText(this,"Added SuccessFully",Toast.LENGTH_SHORT).show()
-                                            val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                            startActivity(intent)
-                                        }
-                                }
-                        }
-                        else{
-                            Toast.makeText(this,"Please fill atleast one Detail",Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                else{
-                    Toast.makeText(this,"Machine Image Required",Toast.LENGTH_SHORT).show()
-                }
-
-            }
-            else{
-                Toast.makeText(this,"Please fill all Required Fields",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Enter at least one Detail",Toast.LENGTH_SHORT).show()
             }
         }
 

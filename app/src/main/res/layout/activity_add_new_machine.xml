@@ -58,8 +58,8 @@
                     android:layout_marginTop="8dp"
                     android:text="Add Machine"
                     android:textAlignment="center"
-                    android:textSize="22sp"
-                    android:textColor="@color/primary_dark"/>
+                    android:textColor="@color/primary_dark"
+                    android:textSize="22sp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -94,8 +94,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/machineDetailsImageCardView"
                         android:layout_centerHorizontal="true"
-                        android:text="Click to add Image"
-                        android:layout_marginBottom="20dp"/>
+                        android:layout_marginBottom="20dp"
+                        android:text="Click to add Image" />
 
                     <EditText
                         android:id="@+id/edtTextMachineName"

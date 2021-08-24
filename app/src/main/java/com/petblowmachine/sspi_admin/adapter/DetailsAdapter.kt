@@ -12,9 +12,10 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.petblowmachine.sspi_admin.R
 import com.petblowmachine.sspi_admin.modal.Applic
+import com.petblowmachine.sspi_admin.modal.MachineDetail
 import org.w3c.dom.Text
 
-class DetailsAdapter(private val context:Context,private val arrayList: ArrayList<Int>)
+class DetailsAdapter(private val context:Context,private val arrayList: ArrayList<MachineDetail>)
     :RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,8 +25,9 @@ class DetailsAdapter(private val context:Context,private val arrayList: ArrayLis
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.edtTextKey.text.clear()
-        holder.edtTextValue.text.clear()
+
+        holder.edtTextKey.setText(arrayList[position].key)
+        holder.edtTextValue.setText(arrayList[position].value)
         while(Applic.detailsArrayKey.size < arrayList.size){
             Applic.detailsArrayKey.add("")
         }
@@ -43,13 +45,8 @@ class DetailsAdapter(private val context:Context,private val arrayList: ArrayLis
             if(position == arrayList.size-1){
                 val pos = position
                 holder.edtTextKey.addTextChangedListener(object:TextWatcher{
-                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                    }
-
-                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    }
-
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun afterTextChanged(p0: Editable?) {
                         if(holder.edtTextKey.hasFocus()){
                             if(!TextUtils.isEmpty(holder.edtTextKey.text)){
@@ -75,12 +72,9 @@ class DetailsAdapter(private val context:Context,private val arrayList: ArrayLis
             if(position == arrayList.size-1){
                 val pos = position
                 holder.edtTextValue.addTextChangedListener(object :TextWatcher{
-                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-                    }
-
-                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    }
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
                     override fun afterTextChanged(p0: Editable?) {
                         if(holder.edtTextValue.hasFocus()){
