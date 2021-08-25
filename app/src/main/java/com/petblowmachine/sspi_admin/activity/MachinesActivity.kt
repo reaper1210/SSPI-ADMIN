@@ -37,17 +37,23 @@ class MachinesActivity : AppCompatActivity() {
         arrList = ArrayList()
         arrList.add(MachineInfo("Add","","","",""))
 
-        db.collection("categories").document(Applic.categoryName).collection("Machines")
-            .get()
-            .addOnSuccessListener {
-                for(document in it){
-                    arrList.add(MachineInfo(document.id,document["machineImg"].toString(),
-                        document["detail1"].toString(),document["detail2"].toString(),
-                        document["detail3"].toString()))
+        try{
+            db.collection("categories").document(Applic.categoryName).collection("Machines")
+                .get()
+                .addOnSuccessListener {
+                    for(document in it){
+                        arrList.add(MachineInfo(document.id,document["machineImg"].toString(),
+                            document["detail1"].toString(),document["detail2"].toString(),
+                            document["detail3"].toString()))
+                    }
+                    recyclerView.layoutManager = linearLayout
+                    recyclerView.adapter = machinesAdapter
                 }
-                recyclerView.layoutManager = linearLayout
-                recyclerView.adapter = machinesAdapter
-            }
+        }
+        catch(e: FirebaseFirestoreException){
+            println("Exception: ${Applic.categoryName}")
+        }
+
 
         machinesAdapter = MachineAdapter(this, arrList)
 

@@ -49,7 +49,7 @@ class CategoryAdapter(private val arrayList:ArrayList<Category>, private val con
         else{
             val currentHolder = holder as ViewHolder1
             currentHolder.itemView.setOnClickListener {
-                println("KeyList: ${Applic.detailsArrayKey}")
+                Applic.categoryName = category.categoryName
                 val intent = Intent(context, AddNewCategory::class.java)
                 ContextCompat.startActivity(context,intent,null)
             }

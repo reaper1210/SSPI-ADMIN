@@ -33,8 +33,6 @@ class AddNewCategory : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_category)
 
-        Applic.categoryName = ""
-
         db = FirebaseFirestore.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
         edtTxtCategoryName = findViewById(R.id.edtTxtCategoryName)
