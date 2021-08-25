@@ -33,6 +33,7 @@ class AddNewCategory : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_category)
 
+        Applic.categoryImg = ""
         db = FirebaseFirestore.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
         edtTxtCategoryName = findViewById(R.id.edtTxtCategoryName)
@@ -56,52 +57,50 @@ class AddNewCategory : AppCompatActivity() {
             }
 
         imgCategory.setOnClickListener {
+
             Applic.categoryName = edtTxtCategoryName.text.toString()
             if(Applic.categoryName!=""){
-                val catData = hashMapOf(
-                    "categoryImg" to Applic.categoryImg
-                )
-                db.collection("categories").document(Applic.categoryName)
-                    .set(catData)
-                    .addOnSuccessListener {
-                        ImagePicker.with(this)
-                            .compress(1024)
-                            .crop(160f,128f)
-                            .maxResultSize(
-                                1080,
-                                1080
-                            )
-                            .createIntent { intent ->
-                                startForProfileImageResult.launch(intent)
-                            }
+                ImagePicker.with(this)
+                    .compress(1024)
+                    .crop(160f,128f)
+                    .maxResultSize(
+                        1080,
+                        1080
+                    )
+                    .createIntent { intent ->
+                        startForProfileImageResult.launch(intent)
                     }
             }
             else{
-                Toast.makeText(this, "Add the Machine Name First", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Add the Category Name First", Toast.LENGTH_SHORT).show()
             }
         }
 
 
         btnAddCategory.setOnClickListener {
-            if (!TextUtils.isEmpty(edtTxtCategoryName.text)) {
+            if (Applic.categoryImg.isNotBlank()) {
                 Applic.categoryName = edtTxtCategoryName.text.toString()
+                val data = hashMapOf(
+                    "categoryImg" to Applic.categoryImg
+                )
                 db.collection("categories").document(Applic.categoryName)
-                    .update("categoryImg", Applic.categoryImg)
+                    .set(data)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Category Added Successfully", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@AddNewCategory, MainActivity::class.java)
                         startActivity(intent)
+                        Applic.categoryImg = ""
+                        Applic.categoryName = ""
                     }
             }
             else {
-                edtTxtCategoryName.error = "Category Name Required"
+                edtTxtCategoryName.error = "Category Image Required"
             }
         }
     }
 
        private fun uploadImage() {
             val filePath = storageReference.child("machineImages").child(Applic.categoryName)
-            var categoryImage: String
             filePath.putFile(imageUri).addOnSuccessListener {
                 filePath.downloadUrl.addOnSuccessListener {
                     Applic.categoryImg = it.toString()
