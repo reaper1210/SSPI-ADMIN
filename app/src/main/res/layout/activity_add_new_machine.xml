@@ -251,7 +251,7 @@
                                         android:id="@+id/btnRemoveEdtTxt"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:src="@drawable/add_img" />
+                                        android:src="@drawable/remove_img" />
 
                                 </androidx.cardview.widget.CardView>
 

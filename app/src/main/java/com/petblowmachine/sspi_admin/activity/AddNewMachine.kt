@@ -94,13 +94,14 @@ class AddNewMachine : AppCompatActivity() {
                 .collection("Machines").document(Applic.machineName)
                 .collection("details").document("details").get()
                 .addOnCompleteListener { getDetails ->
-
                     if(getDetails.isSuccessful){
                         val document = getDetails.result!!
                         for(docField in document.data!!){
                             val key = docField.key.toString()
                             val value = docField.value.toString()
                             arrayList.add(MachineDetail(key,value))
+                            Applic.detailsArrayKey.add(key)
+                            Applic.detailsArrayValue.add(value)
                         }
                         adapter = DetailsAdapter(this, arrayList)
                         recyclerView.adapter = adapter
@@ -132,31 +133,35 @@ class AddNewMachine : AppCompatActivity() {
                         for(i in 0 until Applic.detailsArrayKey.size){
                             data2[Applic.detailsArrayKey[i]] = Applic.detailsArrayValue[i]
                         }
-                        if(Applic.areAllDetailsFilled){
-
+                        if(!Applic.detailsArrayKey.contains("") and !Applic.detailsArrayValue.contains("")){
                             db.collection("categories").document(Applic.categoryName).collection("Machines")
-                                .document(Applic.machineName).delete()
-                                .addOnCompleteListener { delete ->
-                                    if(delete.isSuccessful){
-                                        db.collection("categories").document(Applic.categoryName).collection("Machines")
-                                            .document(machineName)
-                                            .set(data)
-                                            .addOnSuccessListener {
+                                .document(Applic.machineName).collection("details").document("details").delete()
+                                .addOnSuccessListener {
+                                    db.collection("categories").document(Applic.categoryName).collection("Machines")
+                                        .document(Applic.machineName).delete()
+                                        .addOnCompleteListener { delete ->
+                                            if(delete.isSuccessful){
                                                 db.collection("categories").document(Applic.categoryName).collection("Machines")
-                                                    .document(machineName).collection("details").document("details")
-                                                    .set(data2)
+                                                    .document(machineName)
+                                                    .set(data)
                                                     .addOnSuccessListener {
-                                                        Toast.makeText(this,"Updated SuccessFully",Toast.LENGTH_SHORT).show()
-                                                        val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
-                                                        startActivity(intent)
+                                                        db.collection("categories").document(Applic.categoryName).collection("Machines")
+                                                            .document(machineName).collection("details").document("details")
+                                                            .set(data2)
+                                                            .addOnSuccessListener {
+                                                                Toast.makeText(this,"Updated SuccessFully",Toast.LENGTH_SHORT).show()
+                                                                Applic.detailsArrayValue.clear()
+                                                                Applic.detailsArrayKey.clear()
+                                                                val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
+                                                                startActivity(intent)
+                                                            }
                                                     }
                                             }
-                                    }
-                                    else{
-                                        Toast.makeText(this,"Error while updating machine",Toast.LENGTH_SHORT).show()
-                                    }
+                                            else{
+                                                Toast.makeText(this,"Error while updating machine",Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
                                 }
-
 
                         }
                         else{
@@ -174,26 +179,29 @@ class AddNewMachine : AppCompatActivity() {
             }
 
             btnDeleteMachine.setOnClickListener {
-
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage("Do you want to delete ${Applic.machineName} Machine?")
                     .setTitle("Delete Machine")
                     .setPositiveButton("Yes") { _, _ ->
                         finish()
                         db.collection("categories").document(Applic.categoryName)
-                            .collection("Machines").document(Applic.machineName)
-                            .delete()
-                            .addOnCompleteListener {
-                                if(it.isSuccessful){
-                                    Toast.makeText(this,"${Applic.machineName} deleted successfully",Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this,MachinesActivity::class.java)
-                                    startActivity(intent)
-                                }
-                                else{
-                                    Toast.makeText(this,"Failed to delete ${Applic.machineName}",Toast.LENGTH_SHORT).show()
-                                }
+                            .collection("Machines").document(Applic.machineName).collection("details")
+                            .document("details").delete()
+                            .addOnSuccessListener {
+                                db.collection("categories").document(Applic.categoryName)
+                                    .collection("Machines").document(Applic.machineName)
+                                    .delete()
+                                    .addOnCompleteListener {
+                                        if(it.isSuccessful){
+                                            Toast.makeText(this,"${Applic.machineName} deleted successfully",Toast.LENGTH_SHORT).show()
+                                            val intent = Intent(this,MachinesActivity::class.java)
+                                            startActivity(intent)
+                                        }
+                                        else{
+                                            Toast.makeText(this,"Failed to delete ${Applic.machineName}",Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
                             }
-
 
                     }
                     .setNegativeButton("No") { dialog, _ ->
@@ -227,7 +235,7 @@ class AddNewMachine : AppCompatActivity() {
                         for(i in 0 until Applic.detailsArrayKey.size){
                             data2[Applic.detailsArrayKey[i]] = Applic.detailsArrayValue[i]
                         }
-                        if(Applic.areAllDetailsFilled){
+                        if(!Applic.detailsArrayKey.contains("") and !Applic.detailsArrayValue.contains("")){
                             db.collection("categories").document(Applic.categoryName).collection("Machines")
                                 .document(machineName)
                                 .set(data)
@@ -237,6 +245,8 @@ class AddNewMachine : AppCompatActivity() {
                                         .set(data2)
                                         .addOnSuccessListener {
                                             Toast.makeText(this,"Added SuccessFully",Toast.LENGTH_SHORT).show()
+                                            Applic.detailsArrayValue.clear()
+                                            Applic.detailsArrayKey.clear()
                                             val intent = Intent(this@AddNewMachine,MachinesActivity::class.java)
                                             startActivity(intent)
                                         }

@@ -41,9 +41,10 @@ class CategoryAdapter(private val arrayList:ArrayList<Category>, private val con
             currentHolder.categoryName.text = category.categoryName
             Glide.with(context).load(category.categoryImg).centerCrop().into(holder.categoryImg)
             currentHolder.itemView.setOnClickListener {
-                val intent = Intent(context, MachinesActivity::class.java)
                 Applic.categoryName = category.categoryName
-                ContextCompat.startActivity(context, intent, null)
+                val intent = Intent(context, MachinesActivity::class.java)
+                println("Category Name:${Applic.categoryName}")
+                context.startActivity(intent)
             }
         }
         else{

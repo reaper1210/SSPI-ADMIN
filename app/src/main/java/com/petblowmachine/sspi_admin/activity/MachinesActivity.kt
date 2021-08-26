@@ -35,6 +35,8 @@ class MachinesActivity : AppCompatActivity() {
 
         linearLayout = LinearLayoutManager(this)
         arrList = ArrayList()
+        Applic.detailsArrayKey.clear()
+        Applic.detailsArrayValue.clear()
         arrList.add(MachineInfo("Add","","","",""))
 
         try{
