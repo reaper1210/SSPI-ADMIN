@@ -64,6 +64,17 @@
         android:layout_below="@id/headMachinesAct"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:id="@+id/txtNoMachinesToshow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No Machines to show"
+        android:textSize="28sp"
+        android:textStyle="italic"
+        android:visibility="gone"/>
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/deleteCategoryCardView"
         android:layout_width="wrap_content"

@@ -16,8 +16,9 @@ import com.petblowmachine.sspi_admin.activity.AddNewCategory
 import com.petblowmachine.sspi_admin.activity.MachinesActivity
 import com.petblowmachine.sspi_admin.modal.Applic
 import com.petblowmachine.sspi_admin.modal.Category
+import com.petblowmachine.sspi_admin.modal.MachineInfo
 
-class CategoryAdapter(private val arrayList:ArrayList<Category>, private val context: Context):
+class CategoryAdapter(private var arrayList:ArrayList<Category>, private val context: Context):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -59,6 +60,11 @@ class CategoryAdapter(private val arrayList:ArrayList<Category>, private val con
 
     override fun getItemCount(): Int {
         return arrayList.size
+    }
+
+    fun updateList(list: ArrayList<Category>) {
+        arrayList = list
+        notifyDataSetChanged()
     }
 
     class ViewHolder1(itemView: View): RecyclerView.ViewHolder(itemView){

@@ -12,7 +12,7 @@
         android:id="@+id/topLayoutMainAct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/top_rect">
+        android:background="@color/primary_color">
 
         <RelativeLayout
             android:id="@+id/headerLayoutMainAct"
@@ -26,36 +26,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:src="@drawable/sspi_logo"/>
+                android:src="@drawable/sspi_logo" />
 
             <ImageView
                 android:id="@+id/headerTextMainAct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@id/logoMainAct"
                 android:src="@drawable/header_text" />
 
         </RelativeLayout>
-
-        <EditText
-            android:id="@+id/searchEdtTxtMainAct"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_below="@id/headerLayoutMainAct"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/search_edt_bg"
-            android:drawableEnd="@drawable/search_drawable"
-            android:hint="Categories"
-            android:paddingStart="8dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:textColorHint="@color/primary_color"
-            android:textCursorDrawable="@drawable/cursor_edt_txt" />
 
     </RelativeLayout>
 

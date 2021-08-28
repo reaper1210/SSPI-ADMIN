@@ -15,7 +15,7 @@ import com.petblowmachine.sspi_admin.activity.AddNewMachine
 import com.petblowmachine.sspi_admin.modal.Applic
 import com.petblowmachine.sspi_admin.modal.MachineInfo
 
-class MachineAdapter(private val context: Context, private val itemList: ArrayList<MachineInfo>):
+class MachineAdapter(private val context: Context, private var itemList: ArrayList<MachineInfo>):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -60,6 +60,11 @@ class MachineAdapter(private val context: Context, private val itemList: ArrayLi
 
     override fun getItemCount(): Int {
         return itemList.size
+    }
+
+    fun updateList(list: ArrayList<MachineInfo>) {
+        itemList = list
+        notifyDataSetChanged()
     }
 
     class ViewHolder1(view:View): RecyclerView.ViewHolder(view){

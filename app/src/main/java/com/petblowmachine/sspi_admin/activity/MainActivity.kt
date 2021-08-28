@@ -18,7 +18,6 @@ import com.petblowmachine.sspi_admin.modal.Applic
 
 class MainActivity : AppCompatActivity() {
     lateinit var viewpager:ViewPager2
-    lateinit var searchEdtText: EditText
     private lateinit var db:FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         db.collection("admin").document("admin").set(docData)
 
         viewpager = findViewById(R.id.viewpager)
-        searchEdtText = findViewById(R.id.searchEdtTxtMainAct)
 
         val fragmentList = arrayListOf(
             Categories(),
@@ -48,17 +46,6 @@ class MainActivity : AppCompatActivity() {
         )
 
         viewpager.adapter = adapter
-
-        viewpager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                if(position==1){
-                    searchEdtText.visibility = View.GONE
-                }
-                else{
-                    searchEdtText.visibility = View.VISIBLE
-                }
-            }
-        })
 
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         TabLayoutMediator(tabLayout, viewpager) { tab, position ->

@@ -4,6 +4,11 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
@@ -23,6 +28,9 @@ class MachinesActivity : AppCompatActivity() {
     private lateinit var machinesAdapter: MachineAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var arrList:ArrayList<MachineInfo>
+    private lateinit var searchEdtTxtMachinesAct: EditText
+    private lateinit var txtNoMachinesToShow: TextView
+    private var temp: ArrayList<MachineInfo> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +40,8 @@ class MachinesActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.machinesRecyclerView)
         btnDeleteCategory = findViewById(R.id.deleteCategoryCardView)
+        searchEdtTxtMachinesAct = findViewById(R.id.searchEdtTxtMachinesAct)
+        txtNoMachinesToShow = findViewById(R.id.txtNoMachinesToshow)
 
         linearLayout = LinearLayoutManager(this)
         arrList = ArrayList()
@@ -58,6 +68,21 @@ class MachinesActivity : AppCompatActivity() {
 
 
         machinesAdapter = MachineAdapter(this, arrList)
+
+        searchEdtTxtMachinesAct.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                filter(p0.toString())
+            }
+
+        })
 
         btnDeleteCategory.setOnClickListener {
 
@@ -86,7 +111,19 @@ class MachinesActivity : AppCompatActivity() {
                 .show()
 
         }
+    }
 
+    private fun filter(text: String?) {
+        temp = ArrayList()
+        for (i in arrList) {
+            if ((i.machineName.lowercase()).contains(text.toString().lowercase())) {
+                temp.add(i)
+            }
+        }
+        if(temp.size <=1 ){
+            temp.add(0, MachineInfo("","","","",""))
+        }
+        machinesAdapter.updateList(temp)
     }
 
     override fun onBackPressed() {
