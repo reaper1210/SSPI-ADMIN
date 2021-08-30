@@ -66,7 +66,6 @@ class Categories : Fragment() {
                     for(document in it){
                         arrayList.add(Category(document.id,document["categoryImg"].toString()))
                     }
-                    val context = activity as Context
                     gridLayoutManager = GridLayoutManager(activity,2)
                     recyclerView.layoutManager = gridLayoutManager
                     recyclerView.adapter = adapter
